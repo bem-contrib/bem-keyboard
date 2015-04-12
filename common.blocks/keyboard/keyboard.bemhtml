@@ -1,0 +1,84 @@
+block('keyboard')(
+    js()(true),
+    content()(function() {
+        var keyToKind = {
+            '←': 'backspace',
+            '⇪': 'capslock',
+            '⇧': 'shift',
+            '↵': 'enter'
+        },
+        layouts = this.ctx.layouts,
+        currentLayout = this.ctx.layout;
+
+        function buildLayout(layout, isShift) {
+            return layout.map(function(row) {
+                return {
+                    elem: 'row',
+                    elemMods: { shift: isShift },
+                    content: row.map(function(key) {
+                        return {
+                            block: 'button',
+                            mods: {
+                                theme: 'islands',
+                                size: 'l',
+                                togglable: ['⇪', '⇧'].indexOf(key) > -1 ? 'check' : undefined,
+                                kind: keyToKind[key]
+                            },
+                            text: isShift ? key[1] ? key[1] : key[0].toUpperCase() : key[0]
+                        };
+                    })
+                };
+            });
+        }
+
+        var layoutNames = Object.keys(layouts);
+
+        return [
+            layoutNames.map(function(name) {
+                var layout = layouts[name].layout;
+
+                return {
+                    elem: 'layout',
+                    elemMods: { name: name, current: currentLayout === name },
+                    content: [
+                        buildLayout(layout),
+                        buildLayout(layout, true)
+                    ]
+                };
+            }),
+            {
+                block: 'select',
+                mods: { mode: 'radio', theme: 'islands', size: 'l' },
+                name: 'select2',
+                val: currentLayout,
+                options: layoutNames
+                    .filter(function(name) {
+                        return layouts[name].title;
+                    })
+                    .map(function(name) {
+                        return {
+                            val: name,
+                            text: layouts[name].title
+                        };
+                    })
+            },
+            {
+                block: 'button',
+                mix: { block: this.block, elem: 'space' },
+                mods: {
+                    theme: 'islands',
+                    size: 'l',
+                    kind: 'space'
+                },
+                text: ' '
+            },
+            {
+                block: 'button',
+                mix: { block: this.block, elem: 'symbols' },
+                mods: { theme: 'islands', size: 'l', togglable: 'check' },
+                text: '« » { } ~'
+            }
+        ];
+
+    })
+);

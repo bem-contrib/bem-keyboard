@@ -1,0 +1,39 @@
+.keyboard__layout
+{
+    display: none;
+}
+
+.keyboard__layout_current
+{
+    display: block;
+}
+
+.keyboard__layout .button
+{
+    min-width: 46px;
+    margin: 2px;
+}
+
+.keyboard .button_kind_space
+{
+    width: 450px;
+    margin: 2px 20px 0;
+}
+
+.keyboard .button_kind_shift
+{
+    width: 71px;
+}
+
+.keyboard_capslock .keyboard__row,
+.keyboard_shift .keyboard__row,
+.keyboard__row_shift
+{
+    display: none;
+}
+
+.keyboard_capslock .keyboard__row_shift,
+.keyboard_shift .keyboard__row_shift
+{
+    display: block;
+}
